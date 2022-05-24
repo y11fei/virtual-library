@@ -34,8 +34,8 @@
         <div class="books-container">
           <div class="add-book" data-add="add-btn">
             <div>
-            <h3 class="add-text">Add Book</h3>
-            <h3 class="i-text"><i class="fa fa-plus"></i></h3>
+              <h3 class="add-text">Add Book</h3>
+              <h3 class="i-text"><i class="fa fa-plus"></i></h3>
             </div>
           </div>
           <div class="card-books" data-book-cards="book-cards">
@@ -53,8 +53,9 @@
           </div>
         </div>
       </div>
+      <!-- add modal -->
       <div class="modal-books" data-book-modal="modal-book">
-        <h3>Add New Book</h3>
+        <h3 id="add-bk">Add New Book</h3>
         <input
           type="text"
           id="book-title"
@@ -80,7 +81,7 @@
             data-book-rating="book-rating"
             required
           />
-          <output data-brating-output="brate-output">5</output>
+          <output id="temp-rating" data-brating-output="brate-output">5</output>
         </div>
         <div class="checkbox">
           Read?
@@ -102,6 +103,60 @@
           data-book-submit="submit-book"
         >
           Submit
+        </button>
+      </div>
+      <!-- edit modal -->
+      <div class="edit-books" data-book-edit="edit-modal-book">
+        <h3 id="edit-bk">Edit Book</h3>
+        <input
+          type="text"
+          id="editbook-title"
+          placeholder="Book Title"
+          data-edit-title="book-title"
+          required
+        />
+        <input
+          type="number"
+          id="edit-pages"
+          placeholder="0"
+          data-edit-pages="book-pages"
+          required
+        />
+        <div class="edit-rating">
+          Rating?
+          <input
+            type="range"
+            min="0"
+            max="10"
+            name="book-rating"
+            id="rating-edit"
+            data-book-rating="book-rating"
+            required
+          />
+          <output id="edit-temp-rating" data-brating-output="brate-output"
+            >5</output
+          >
+        </div>
+        <div class="checkbox">
+          Read?
+          <label class="editstatus-label" for="book-status">
+            <input
+              type="checkbox"
+              class="status-checkbox"
+              name="book-status"
+              id="edit-status"
+              data-book-status="book-status"
+              required
+            />
+          </label>
+        </div>
+        <button
+          type="button"
+          id="edit"
+          class="btn btn-light"
+          data-book-edit="submit-book"
+        >
+          Update
         </button>
       </div>
     </div>

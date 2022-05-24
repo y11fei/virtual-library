@@ -156,3 +156,65 @@
   opacity: 1;
   visibility: visible;
 }
+
+.edit-books {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: repeat(1, 25%);
+  row-gap: 15px;
+  font-family: "Questrial", sans-serif;
+  height: 400px;
+  width: 360px;
+  background-color: rgb(255, 255, 255);
+  border: 5px solid rgb(160, 160, 160);
+  z-index: 100;
+  h3 {
+    margin-top: 35px;
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
+.edit-books.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.status-checkbox {
+  margin: 0 30%;
+  font-size: 1.5rem;
+  input {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+#editbook-title,
+#edit-pages {
+  width: 20rem;
+  height: 2.5rem;
+  margin-left: 5%;
+}
+
+.edit-rating {
+  margin-left: 5%;
+  font-size: 1.5rem;
+  input {
+    -webkit-appearance: none;
+    width: 60%;
+    appearance: none;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+  }
+}
+
+#edit {
+  font-size: 1.25rem;
+}

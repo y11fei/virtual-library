@@ -47,20 +47,41 @@ let bookTitleEntry = document.querySelector("[data-btitle-entry]");
 let bookPagesEntry = document.querySelector("[data-bpages-entry]");
 let bookRatingEntry = document.querySelector("[data-brating-entry]");
 let bookStatusEntry = document.querySelector("[data-bstatus-entry]");
+let removeButton = document.querySelectorAll("#remove-btn");
+let editButton = document.querySelectorAll("#edit-btn");
+let editModal = document.querySelector("[data-book-edit]");
+const editBookRating = document.getElementById("rating-edit");
+const editBookRatingOutput = document.getElementById("edit-temp-rating");
 
 //values
 var bookIsRead = false;
 var bookRatingValue = "";
+var editBookRatingVal = "";
 
 addBook.addEventListener("click", openModal);
-overlay.addEventListener("click", closeModal);
+overlay.addEventListener("click", () => {
+  closeModal();
+  resetEntry();
+});
+removeButton.forEach((button) => {
+  button.addEventListener("click", removeEntry);
+});
+editButton.forEach((button) => {
+  button.addEventListener("click", editEntry);
+});
 
 function openModal() {
   modalBook.classList.add("active");
   overlay.classList.add("active");
 }
 
+function openEdit() {
+  editModal.classList.add("active");
+  overlay.classList.add("active");
+}
+
 function closeModal() {
+  editModal.classList.remove("active");
   modalBook.classList.remove("active");
   overlay.classList.remove("active");
 }
@@ -68,8 +89,10 @@ function closeModal() {
 bookSubmitBtn.addEventListener("click", () => {
   closeModal();
   logBook();
+  resetEntry();
 });
 
+//create entry card
 function createEntry(titleVal, pagesVal, ratingVal, statusVal) {
   const newEntry = document.createElement("div");
   const entry = document.querySelector(".entry-text").cloneNode(true);
@@ -77,7 +100,9 @@ function createEntry(titleVal, pagesVal, ratingVal, statusVal) {
   const bPages = document.createElement("h4");
   const bRating = document.createElement("h4");
   const bStatus = document.createElement("h4");
-  const entryButtons = document.querySelector('.entry-btns').cloneNode(true)
+  const entryButtons = document.createElement("div");
+  const editBtn = document.querySelector("#edit-btn").cloneNode(true);
+  const removeBtn = document.querySelector("#remove-btn").cloneNode(true);
 
   newEntry.classList.add("entry-books");
   bTitle.classList.add("book-title");
@@ -85,6 +110,8 @@ function createEntry(titleVal, pagesVal, ratingVal, statusVal) {
   bRating.classList.add("book-rating");
   bStatus.classList.add("book-status");
   entryButtons.classList.add("entry-btns");
+  removeBtn.addEventListener("click", removeEntry);
+  editBtn.addEventListener("click", editEntry);
 
   bTitle.textContent = titleVal;
   bPages.textContent = `${pagesVal} pages`;
@@ -98,8 +125,11 @@ function createEntry(titleVal, pagesVal, ratingVal, statusVal) {
   newEntry.appendChild(bRating);
   newEntry.appendChild(bStatus);
   newEntry.appendChild(entryButtons);
+  entryButtons.appendChild(editBtn);
+  entryButtons.appendChild(removeBtn);
 }
 
+//logs book to library array
 function logBook() {
   var bookTitle = bookTitleInput.value;
   var bookPages = bookPagesInput.value;
@@ -109,14 +139,25 @@ function logBook() {
   } else {
     bookStatus = "not read";
   }
-
   let newBook = new Book(bookTitle, bookPages, bookRating, bookStatus).result;
-  createEntry(bookTitle, bookPages, bookRating, bookStatus);
+
+  if (bookTitle != "" && bookPages != "") {
+    createEntry(bookTitle, bookPages, bookRating, bookStatus);
+    library.push(newBook);
+    console.log(library);
+  } else {
+    return;
+  }
 }
 
 bookRatingInput.addEventListener("input", (e) => {
   bookRatingValue = e.target.value;
   bookRatingOutput.textContent = `${bookRatingValue}`;
+});
+
+editBookRating.addEventListener("input", (e) => {
+  editBookRatingVal = e.target.value;
+  editBookRatingOutput.textContent = `${editBookRatingVal}`;
 });
 
 bookStatusInput.addEventListener("input", () => {
@@ -126,3 +167,57 @@ bookStatusInput.addEventListener("input", () => {
     bookIsRead = false;
   }
 });
+
+//removes entry card & from array
+function removeEntry(e) {
+  const entry = e.target.parentNode.parentNode;
+  const entryChildren = entry.children;
+  const entryTitle = entryChildren.item(1);
+  entry.remove();
+  const index = library.findIndex(function (book, index) {
+    if (book.name == entryTitle.textContent) {
+      library.splice(index, 1);
+    }
+  });
+  console.log(library);
+}
+
+function resetEntry() {
+  document.getElementById("book-title").value = "";
+  document.getElementById("book-pages").value = "";
+  document.getElementById("rating-book").value = 5;
+  document.getElementById("temp-rating").value = 5;
+  document.getElementById("b-status").checked = false;
+}
+
+//edit entry
+function editEntry(e) {
+  openEdit();
+  let entry = e.target.parentNode.parentNode.children;
+  let title = entry.item(1);
+  let pages = entry.item(2);
+  let rating = entry.item(3);
+  let status = entry.item(4);
+
+  var currentTitle = document.getElementById("editbook-title");
+  var currentPages = document.getElementById("edit-pages");
+  var currentRatingSlider = document.getElementById("rating-edit");
+  var currentRatingVal = document.getElementById("edit-temp-rating");
+  var currentStatus = document.getElementById("edit-status");
+
+  currentTitle.value = title.textContent;
+  let pagesSlice = pages.textContent.search(" ");
+  currentPages.value = pages.textContent.slice(0, pagesSlice);
+
+  let ratingSlice = rating.textContent.search(" ");
+  currentRatingSlider.value = rating.textContent.slice(0, ratingSlice);
+  currentRatingVal.textContent = currentRatingSlider.value;
+
+  if (status.textContent == "read") {
+    currentStatus.checked = true;
+  } else {
+    currentStatus.checked = false;
+  }
+}
+
+//update entry, local stroage function
