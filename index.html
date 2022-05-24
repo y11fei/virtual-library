@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Press+Start+2P&family=Questrial&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="col blue">
+        <h2 class="text-center">library</h2>
+      </div>
+    </header>
+    <div class="body">
+      <div class="books">
+        <div class="books-container">
+          <div class="add-book" data-add="add-btn">
+            <div>
+            <h3 class="add-text">Add Book</h3>
+            <h3 class="i-text"><i class="fa fa-plus"></i></h3>
+            </div>
+          </div>
+          <div class="card-books" data-book-cards="book-cards">
+            <div class="entry-books" data-book-entry="book-entry">
+              <h3 class="entry-text">Entry!</h3>
+              <h4 class="book-title" data-btitle-entry>Book:</h4>
+              <h4 class="book-pages" data-bpages-entry>Pages:</h4>
+              <h4 class="book-rating" data-branting-entry>Rating:</h4>
+              <h4 class="book-status" data-bpages-status>Status:</h4>
+              <div class="entry-btns">
+                <button class="btn btn-primary" id="edit-btn">Edit</button>
+                <button class="btn btn-danger" id="remove-btn">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-books" data-book-modal="modal-book">
+        <h3>Add New Book</h3>
+        <input
+          type="text"
+          id="book-title"
+          placeholder="Book Title"
+          data-book-title="book-title"
+          required
+        />
+        <input
+          type="number"
+          id="book-pages"
+          placeholder="0"
+          data-book-pages="book-pages"
+          required
+        />
+        <div class="rating">
+          Rating?
+          <input
+            type="range"
+            min="0"
+            max="10"
+            name="book-rating"
+            id="rating-book"
+            data-book-rating="book-rating"
+            required
+          />
+          <output data-brating-output="brate-output">5</output>
+        </div>
+        <div class="checkbox">
+          Read?
+          <label class="status-label" for="book-status">
+            <input
+              type="checkbox"
+              class="status-checkbox"
+              name="book-status"
+              id="b-status"
+              data-book-status="book-status"
+              required
+            />
+          </label>
+        </div>
+        <button
+          type="button"
+          id="submit"
+          class="btn btn-light"
+          data-book-submit="submit-book"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+    <div id="overlay" class="overlay" data-overlay="overlay"></div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+  <script src="main.js"></script>
+</html>
