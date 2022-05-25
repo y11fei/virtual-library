@@ -141,9 +141,11 @@ function logBook() {
   }
   let newBook = new Book(bookTitle, bookPages, bookRating, bookStatus).result;
 
+  localSave(newBook);
+
   if (bookTitle != "" && bookPages != "") {
+    // addToEntry();
     createEntry(bookTitle, bookPages, bookRating, bookStatus);
-    library.push(newBook);
     console.log(library);
   } else {
     return;
@@ -176,9 +178,10 @@ function removeEntry(e) {
   entry.remove();
   const index = library.findIndex(function (book, index) {
     if (book.name == entryTitle.textContent) {
-      library.splice(index, 1);
+      deleteItem(index);
     }
   });
+
   console.log(library);
 }
 
@@ -218,6 +221,78 @@ function editEntry(e) {
   } else {
     currentStatus.checked = false;
   }
+
+  library.findIndex(function (book, index) {
+    if (
+      book.name == currentTitle.value &&
+      book.pages == currentPages.value &&
+      book.rating == currentRatingSlider.value &&
+      book.status == status.textContent
+    ) {
+      // return index;
+      // console.log(library[index].name)
+      const updateBtn = document.getElementById("edit");
+      updateBtn.addEventListener("click", () => {
+        library[index].name = currentTitle.value;
+        library[index].pages = currentPages.value;
+        library[index].rating = currentRatingSlider.value;
+        if ((currentStatus.checked = true)) {
+          library[index].status = "read";
+        } else {
+          library[index].status = "not read";
+        }
+        title.textContent = library[index].name;
+        pages.textContent = `${library[index].pages} pages`;
+        rating.textContent = `${library[index].rating} out of 10`;
+        status.textContent = `${library[index].status}`;
+
+        let localItems = JSON.parse(localStorage.getItem("book"));
+        localStorage.setItem("book", JSON.stringify(library));
+        console.log(library[index]);
+
+        closeModal();
+      });
+    }
+  });
 }
 
-//update entry, local stroage function
+//update entry
+
+function localSave(item) {
+  let localItems = JSON.parse(localStorage.getItem("book"));
+  if (localItems === null) {
+    library = [];
+  } else {
+    library = localItems;
+  }
+  library.push(item);
+  localStorage.setItem("book", JSON.stringify(library));
+}
+
+function deleteItem(index) {
+  let localItems = JSON.parse(localStorage.getItem("book"));
+  library.splice(index, 1);
+  localStorage.setItem("book", JSON.stringify(library));
+}
+
+//UI local storage
+function addToEntry() {
+  let localItems = JSON.parse(localStorage.getItem("book"));
+  if (localItems === null) {
+    library = [];
+  } else {
+    library = localItems;
+  }
+
+  library.forEach((element) => {
+    title = element.name;
+    pages = element.pages;
+    rating = element.rating;
+    readStatus = element.status;
+    createEntry(title, pages, rating, readStatus);
+  });
+}
+
+addToEntry();
+
+// window.localStorage.clear();
