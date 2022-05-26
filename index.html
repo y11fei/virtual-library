@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Library</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -32,140 +32,280 @@
     <!-- BOOKS SECTION NOW -->
     <!--                   -->
     <!--                   -->
-    <div class="body">
-      <div class="books">
-        <div class="books-container">
-          <div class="add-book" data-add="add-btn">
-            <div>
-              <h3 class="add-text">Add Book</h3>
-              <h3 class="i-text"><i class="fa fa-plus"></i></h3>
+    <div class="flex">
+      <div class="body">
+        <div class="books">
+          <div class="books-container">
+            <div class="add-book" data-add="add-btn">
+              <div>
+                <h3 class="add-text">Add Book</h3>
+                <h3 class="i-text"><i class="fa fa-plus"></i></h3>
+              </div>
             </div>
-          </div>
-          <div class="card-books" data-book-cards="book-cards">
-            <div class="entry-books" data-book-entry="book-entry">
-              <h3 class="entry-text">Entry!</h3>
-              <h4 class="book-title" data-btitle-entry>Book:</h4>
-              <h4 class="book-pages" data-bpages-entry>Pages:</h4>
-              <h4 class="book-rating" data-branting-entry>Rating:</h4>
-              <h4 class="book-status" data-bpages-status>Status:</h4>
-              <div class="entry-btns">
-                <button class="btn btn-primary" id="edit-btn">Edit</button>
-                <button class="btn btn-danger" id="remove-btn">Remove</button>
+            <div class="card-books" data-book-cards="book-cards">
+              <div class="entry-books" data-book-entry="book-entry">
+                <h3 class="entry-text">Entry!</h3>
+                <h4 class="book-title" data-btitle-entry>Book:</h4>
+                <h4 class="book-pages" data-bpages-entry>Pages:</h4>
+                <h4 class="book-rating" data-branting-entry>Rating:</h4>
+                <h4 class="book-status" data-bpages-status>Status:</h4>
+                <div class="entry-btns">
+                  <button class="btn btn-primary" id="edit-btn">Edit</button>
+                  <button class="btn btn-danger" id="remove-btn">Remove</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- add modal -->
-      <div class="modal-books" data-book-modal="modal-book">
-        <h3 id="add-bk">Add New Book</h3>
-        <input
-          type="text"
-          id="book-title"
-          placeholder="Book Title"
-          data-book-title="book-title"
-          required
-        />
-        <input
-          type="number"
-          id="book-pages"
-          placeholder="0"
-          data-book-pages="book-pages"
-          required
-        />
-        <div class="rating">
-          Rating?
+        <!-- add modal -->
+        <div class="modal-books" data-book-modal="modal-book">
+          <h3 id="add-bk">Add New Book</h3>
           <input
-            type="range"
-            min="0"
-            max="10"
-            name="book-rating"
-            id="rating-book"
-            data-book-rating="book-rating"
+            type="text"
+            id="book-title"
+            placeholder="Book Title"
+            data-book-title="book-title"
             required
           />
-          <output id="temp-rating" data-brating-output="brate-output">5</output>
-        </div>
-        <div class="checkbox">
-          Read?
-          <label class="status-label" for="book-status">
+          <input
+            type="number"
+            id="book-pages"
+            placeholder="0"
+            data-book-pages="book-pages"
+            required
+          />
+          <div class="rating">
+            Rating?
             <input
-              type="checkbox"
-              class="status-checkbox"
-              name="book-status"
-              id="b-status"
-              data-book-status="book-status"
+              type="range"
+              min="0"
+              max="10"
+              name="book-rating"
+              id="rating-book"
+              data-book-rating="book-rating"
               required
             />
-          </label>
-        </div>
-        <button
-          type="button"
-          id="submit"
-          class="btn btn-light"
-          data-book-submit="submit-book"
-        >
-          Submit
-        </button>
-      </div>
-      <!-- edit modal -->
-      <div class="edit-books" data-book-edit="edit-modal-book">
-        <h3 id="edit-bk">Edit Book</h3>
-        <input
-          type="text"
-          id="editbook-title"
-          placeholder="Book Title"
-          data-edit-title="book-title"
-          required
-        />
-        <input
-          type="number"
-          id="edit-pages"
-          placeholder="0"
-          data-edit-pages="book-pages"
-          required
-        />
-        <div class="edit-rating">
-          Rating?
-          <input
-            type="range"
-            min="0"
-            max="10"
-            name="book-rating"
-            id="rating-edit"
-            data-book-rating="book-rating"
-            required
-          />
-          <output id="edit-temp-rating" data-brating-output="brate-output"
-            >5</output
+            <output id="temp-rating" data-brating-output="brate-output"
+              >5</output
+            >
+          </div>
+          <div class="checkbox">
+            Read?
+            <label class="status-label" for="book-status">
+              <input
+                type="checkbox"
+                class="status-checkbox"
+                name="book-status"
+                id="b-status"
+                data-book-status="book-status"
+                required
+              />
+            </label>
+          </div>
+          <button
+            type="button"
+            id="submit"
+            class="btn btn-light"
+            data-book-submit="submit-book"
           >
+            Submit
+          </button>
         </div>
-        <div class="checkbox">
-          Read?
-          <label class="editstatus-label" for="book-status">
+        <!-- edit modal -->
+        <div class="edit-books" data-book-edit="edit-modal-book">
+          <h3 id="edit-bk">Edit Book</h3>
+          <input
+            type="text"
+            id="editbook-title"
+            placeholder="Book Title"
+            data-edit-title="book-title"
+            required
+          />
+          <input
+            type="number"
+            id="edit-pages"
+            placeholder="0"
+            data-edit-pages="book-pages"
+            required
+          />
+          <div class="edit-rating">
+            Rating?
             <input
-              type="checkbox"
-              class="status-checkbox"
-              name="book-status"
-              id="edit-status"
-              data-book-status="book-status"
+              type="range"
+              min="0"
+              max="10"
+              name="book-rating"
+              id="rating-edit"
+              data-book-rating="book-rating"
               required
             />
-          </label>
+            <output id="edit-temp-rating" data-brating-output="brate-output"
+              >5</output
+            >
+          </div>
+          <div class="checkbox">
+            Read?
+            <label class="editstatus-label" for="book-status">
+              <input
+                type="checkbox"
+                class="status-checkbox"
+                name="book-status"
+                id="edit-status"
+                data-book-status="book-status"
+                required
+              />
+            </label>
+          </div>
+          <button
+            type="button"
+            id="edit"
+            class="btn btn-light"
+            data-book-edit="update-book"
+          >
+            Update
+          </button>
         </div>
-        <button
-          type="button"
-          id="edit"
-          class="btn btn-light"
-          data-book-edit="update-book"
-        >
-          Update
-        </button>
       </div>
+      <!-- MOVIES SECTION NOW -->
+      <!--                   -->
+      <!--                   -->
+      <div class="movies-section">
+        <div class="movies">
+          <div class="movies-container">
+            <div class="add-movie" data-add-movie="add-btn">
+              <div>
+                <h3 class="add-movie-text">Add Movie</h3>
+                <h3 class="i-movietext"><i class="fa fa-plus"></i></h3>
+              </div>
+            </div>
+            <div class="card-movies" data-book-cards="book-cards">
+              <div class="entry-movies" data-book-entry="book-entry">
+                <h3 class="entry-textmovie">Entry!</h3>
+                <h4 class="movie-title" data-mtitle-entry>Movie:</h4>
+                <h4 class="movie-year" data-myear-entry>Release Year:</h4>
+                <h4 class="book-rating" data-mrating-entry>Rating:</h4>
+                <h4 class="book-status" data-movie-status>Status:</h4>
+                <div class="movie-entry-btns">
+                  <button class="btn btn-primary" id="edit-moviebtn">
+                    Edit
+                  </button>
+                  <button class="btn btn-danger" id="remove-moviebtn">
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- add movie modal -->
+        <div class="modal-movies" data-movie-modal="modal-movie">
+          <h3 id="add-mv">Add Movie</h3>
+          <input
+            type="text"
+            id="movie-title"
+            placeholder="Movie Name"
+            data-movie-title="movie-title"
+            required
+          />
+          <input
+            type="number"
+            id="movie-year"
+            placeholder="2008"
+            data-movie-year="movie-year"
+            required
+          />
+          <div class="movie-rating">
+            Rating?
+            <input
+              type="range"
+              min="0"
+              max="10"
+              name="movie-rating"
+              id="rating-movie"
+              data-movie-rating="movie-rating"
+              required
+            />
+            <output id="movietemp-rating" data-mrating-output="brate-output"
+              >5</output
+            >
+          </div>
+          <div class="movie-checkbox">
+            Watched?
+            <label class="moviestatus-label" for="movie-status">
+              <input
+                type="checkbox"
+                class="mstatus-checkbox"
+                name="movie-status"
+                id="m-status"
+                data-movie-status="movie-status"
+                required
+              />
+            </label>
+            </div>
+          <button
+            type="button"
+            id="submit-movie"
+            class="btn btn-light"
+            data-movie-submit="submit-movie"
+          >
+            Submit
+          </button>
+          </div>
+          <!-- edit movie modal -->
+          <div class="editmodal-movies" data-movie-edit="modal-movie">
+          <h3 id="edit-mv">Edit Modal</h3>
+          <input
+            type="text"
+            id="editmovie-title"
+            placeholder="Movie Name"
+            data-edit-mtitle="movie-title"
+            required
+          />
+          <input
+            type="number"
+            id="editmovie-year"
+            placeholder="2008"
+            data-edit-myear="movie-year"
+            required
+          />
+          <div class="editmovie-rating">
+            Rating?
+            <input
+              type="range"
+              min="0"
+              max="10"
+              name="editmovie-rating"
+              id="editrating-movie"
+              data-edit-mrating="movie-rating"
+              required
+            />
+            <output id="editmovietemp-rating" data-edit-mrating-output="brate-output"
+              >5</output
+            >
+          </div>
+          <div class="editmovie-checkbox">
+            Watched?
+            <label class="editmoviestatus-label" for="editmovie-status">
+              <input
+                type="checkbox"
+                class="edit-mstatus-checkbox"
+                name="movie-status"
+                id="edit-m-status"
+                data-edit-mstatus="movie-status"
+                required
+              />
+            </label>
+          </div>
+          <button
+            type="button"
+            id="update-movie"
+            class="btn btn-light"
+            data-movie-update="update-movie"
+          >Update
+          </button>
+      </div>
+      
     </div>
-    <!-- MOVIES SECTION NOW -->
-    <!--                   -->
-    <!--                   -->
 
     <div id="overlay" class="overlay" data-overlay="overlay"></div>
     <script
