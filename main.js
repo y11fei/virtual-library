@@ -25,7 +25,7 @@ class Book {
     if (status) {
       this.status = "read";
     } else {
-      status = "not read";
+      this.status = "not read";
     }
   }
   create() {
@@ -84,7 +84,7 @@ removeButton.forEach((button) => {
   button.addEventListener("click", removeEntry);
 });
 editButton.forEach((button) => {
-  button.addEventListener("click", editEntry);
+  button.addEventListener("click", editBook);
 });
 
 function openModal() {
@@ -101,6 +101,8 @@ function closeModal() {
   editModal.classList.remove("active");
   modalBook.classList.remove("active");
   overlay.classList.remove("active");
+  modalMovie.classList.remove("active");
+  editMovieModal.classList.remove("active");
 }
 
 bookSubmitBtn.addEventListener("click", () => {
@@ -128,7 +130,7 @@ function createEntry(titleVal, pagesVal, ratingVal, statusVal) {
   bStatus.classList.add("book-status");
   entryButtons.classList.add("entry-btns");
   removeBtn.addEventListener("click", removeEntry);
-  editBtn.addEventListener("click", editEntry);
+  editBtn.addEventListener("click", editBook);
 
   bTitle.textContent = titleVal;
   bPages.textContent = `${pagesVal} pages`;
@@ -163,7 +165,7 @@ function logBook() {
   if (bookTitle != "" && bookPages != "") {
     // addToEntry();
     createEntry(bookTitle, bookPages, bookRating, bookStatus);
-    console.log(library);
+    // console.log(library);
   } else {
     return;
   }
@@ -193,25 +195,42 @@ function removeEntry(e) {
   const entryChildren = entry.children;
   const entryTitle = entryChildren.item(1);
   entry.remove();
-  const index = library.findIndex(function (book, index) {
+  library.findIndex(function (book, index) {
     if (book.name == entryTitle.textContent) {
-      deleteItem(index);
+      deleteBook(index);
     }
   });
 
-  console.log(library);
+  movies.findIndex(function (movie, index) {
+    if (movie.title == entryTitle.textContent) {
+      deleteMovie(index);
+    }
+  });
+}
+
+//delete book from storage
+function deleteBook(index) {
+  let localItems = JSON.parse(localStorage.getItem("book"));
+  library.splice(index, 1);
+  localStorage.setItem("book", JSON.stringify(library));
 }
 
 function resetEntry() {
-  document.getElementById("book-title").value = "";
-  document.getElementById("book-pages").value = "";
-  document.getElementById("rating-book").value = 5;
-  document.getElementById("temp-rating").value = 5;
-  document.getElementById("b-status").checked = false;
+  bookTitleInput.value = "";
+  bookPagesInput.value = "";
+  bookRatingInput.value = 5;
+  bookRatingOutput.value = 5;
+  bookStatusInput.checked = false;
+
+  movieTitleInput.value = "";
+  movieYearInput.value = "";
+  movieRatingInput.value = 5;
+  movieRatingOutput.value = 5;
+  movieStatusInput.checked = false;
 }
 
 //edit entry
-function editEntry(e) {
+function editBook(e) {
   openEdit();
   let entry = e.target.parentNode.parentNode.children;
   let title = entry.item(1);
@@ -247,8 +266,8 @@ function editEntry(e) {
       book.status == status.textContent
     ) {
       // return index;
-      // console.log(library[index].name)
-      const updateBtn = document.getElementById("edit");
+      // console.log(library[index].name);
+      const updateBtn = document.getElementById("update-modal");
       updateBtn.addEventListener("click", () => {
         library[index].name = currentTitle.value;
         library[index].pages = currentPages.value;
@@ -273,8 +292,7 @@ function editEntry(e) {
   });
 }
 
-//update entry
-
+// local storage books
 function localSave(item) {
   let localItems = JSON.parse(localStorage.getItem("book"));
   if (localItems === null) {
@@ -285,34 +303,6 @@ function localSave(item) {
   library.push(item);
   localStorage.setItem("book", JSON.stringify(library));
 }
-
-function deleteItem(index) {
-  let localItems = JSON.parse(localStorage.getItem("book"));
-  library.splice(index, 1);
-  localStorage.setItem("book", JSON.stringify(library));
-}
-
-//UI local storage
-function addToEntry() {
-  let localItems = JSON.parse(localStorage.getItem("book"));
-  if (localItems === null) {
-    library = [];
-  } else {
-    library = localItems;
-  }
-
-  library.forEach((element) => {
-    title = element.name;
-    pages = element.pages;
-    rating = element.rating;
-    readStatus = element.status;
-    createEntry(title, pages, rating, readStatus);
-  });
-}
-
-addToEntry();
-
-// window.localStorage.clear();
 
 //................................................................
 //......................................vii.......................
@@ -331,3 +321,262 @@ addToEntry();
 //.mmm..mmmm..mmm...ooooooo.....vvvv....vii..ieeeeeee..esssssss...
 //...................ooooo.....................eeee.....ssssss....
 //................................................................
+
+let movies = [];
+
+class Movie {
+  constructor(title, year, rating, status) {
+    this.title = title;
+    this.year = year;
+    this.rating = rating;
+    this.status = status;
+
+    if (status) {
+      this.status = "watched";
+    } else {
+      this.status = "not watched";
+    }
+  }
+
+  create() {
+    let moviesObj = {
+      title: this.title,
+      year: this.year,
+      rating: this.rating,
+      status: this.status,
+    };
+    return moviesObj;
+  }
+
+  get result() {
+    return this.create();
+  }
+}
+
+function addMovies(movie) {
+  movies.push(movie);
+  return movies;
+}
+
+//get the doms
+
+const addMovie = document.querySelector("[data-add-movie]");
+const modalMovie = document.querySelector("[data-movie-modal]");
+const movieTitleInput = document.querySelector("[data-movie-title]");
+const movieYearInput = document.querySelector("[data-movie-year]");
+const movieRatingInput = document.querySelector("[data-movie-rating]");
+const movieRatingOutput = document.querySelector("[data-mrating-output]");
+const movieStatusInput = document.querySelector("[data-movie-status]");
+const movieSubmitBtn = document.querySelector("[data-movie-submit");
+const movieCards = document.querySelector("[data-movie-cards]");
+const editMovieModal = document.querySelector("[data-movie-edit]");
+
+var movieIsWatched = false;
+var movieRatingVal = "";
+var editMovieRatingVal = "";
+
+addMovie.addEventListener("click", openMovieModal);
+
+function openMovieModal() {
+  modalMovie.classList.add("active");
+  overlay.classList.add("active");
+}
+
+function openEditMovie() {
+  editMovieModal.classList.add("active");
+  overlay.classList.add("active");
+}
+
+movieStatusInput.addEventListener("input", () => {
+  if (movieStatusInput.checked) {
+    movieIsWatched = true;
+  } else {
+    movieIsWatched = false;
+  }
+});
+
+movieRatingInput.addEventListener("input", (e) => {
+  movieRatingValue = e.target.value;
+  movieRatingOutput.textContent = `${movieRatingValue}`;
+});
+
+movieSubmitBtn.addEventListener("click", () => {
+  closeModal();
+  logMovie();
+  resetEntry();
+});
+
+//log movie function
+function logMovie() {
+  var movieTitle = movieTitleInput.value;
+  var movieYear = movieYearInput.value;
+  var movieRating = movieRatingInput.value;
+  if (movieIsWatched == true) {
+    movieStatus = "watched";
+  } else {
+    movieStatus = "not watched";
+  }
+
+  let newMovie = new Movie(movieTitle, movieYear, movieRating, movieStatus)
+    .result;
+
+  localSaveMovie(newMovie);
+
+  if (movieTitle != "" && movieYear != "") {
+    createMovie(movieTitle, movieYear, movieRating, movieStatus);
+  } else {
+    return;
+  }
+}
+
+//create movie entry
+function createMovie(title, year, rating, status) {
+  const newEntry = document.createElement("div");
+  const entry = document.querySelector(".entry-text").cloneNode(true);
+  const mTitle = document.createElement("h4");
+  const mYear = document.createElement("h4");
+  const mRating = document.createElement("h4");
+  const mStatus = document.createElement("h4");
+  const entryButtons = document.createElement("div");
+  const editBtn = document.querySelector("#edit-btn").cloneNode(true);
+  const removeBtn = document.querySelector("#remove-btn").cloneNode(true);
+
+  newEntry.classList.add("entry-movies");
+  mTitle.classList.add("movie-title");
+  mYear.classList.add("movie-year");
+  mRating.classList.add("movie-rating");
+  mStatus.classList.add("movie-status");
+  entryButtons.classList.add("entry-btns");
+  removeBtn.addEventListener("click", removeEntry);
+  editBtn.addEventListener("click", editMovie);
+
+  mTitle.textContent = title;
+  mYear.textContent = year;
+  mRating.textContent = `${rating} out of 10`;
+  mStatus.textContent = status;
+
+  movieCards.appendChild(newEntry);
+  newEntry.appendChild(entry);
+  newEntry.appendChild(mTitle);
+  newEntry.appendChild(mYear);
+  newEntry.appendChild(mRating);
+  newEntry.appendChild(mStatus);
+  newEntry.appendChild(entryButtons);
+  entryButtons.appendChild(editBtn);
+  entryButtons.appendChild(removeBtn);
+}
+
+//local storage movies
+function localSaveMovie(item) {
+  let localMovies = JSON.parse(localStorage.getItem("movie"));
+  if (localMovies === null) {
+    movies = [];
+  } else {
+    movies = localMovies;
+  }
+
+  movies.push(item);
+  localStorage.setItem("movie", JSON.stringify(movies));
+}
+
+//UI local storage
+function addToEntry() {
+  let localItems = JSON.parse(localStorage.getItem("book"));
+  if (localItems === null) {
+    library = [];
+  } else {
+    library = localItems;
+  }
+
+  library.forEach((element) => {
+    title = element.name;
+    pages = element.pages;
+    rating = element.rating;
+    readStatus = element.status;
+    createEntry(title, pages, rating, readStatus);
+  });
+
+  let localMovies = JSON.parse(localStorage.getItem("movie"));
+  if (localMovies === null) {
+    movies = [];
+  } else {
+    movies = localMovies;
+  }
+
+  movies.forEach((element) => {
+    title = element.title;
+    year = element.year;
+    rating = element.rating;
+    movieStatus = element.status;
+    createMovie(title, year, rating, movieStatus);
+  });
+}
+
+addToEntry();
+
+//delete entry
+function deleteMovie(index) {
+  let localMovies = JSON.parse(localStorage.getItem("movie"));
+  movies.splice(index, 1);
+  localStorage.setItem("movie", JSON.stringify(movies));
+}
+
+//edit movie entry
+function editMovie(e) {
+  openEditMovie();
+  let entry = e.target.parentNode.parentNode.children;
+  let title = entry.item(1);
+  let year = entry.item(2);
+  let rating = entry.item(3);
+  let status = entry.item(4);
+
+  var currentTitle = document.getElementById("editmovie-title");
+  var currentYear = document.getElementById("editmovie-year");
+  var currentRatingSlider = document.getElementById("editrating-movie");
+  var currentRatingVal = document.getElementById("editmovietemp-rating");
+  var currentStatus = document.getElementById("edit-m-status");
+
+  currentTitle.value = title.textContent;
+  currentYear.value = year.textContent;
+  let ratingSlice = rating.textContent.search(" ");
+  currentRatingSlider.value = rating.textContent.slice(0, ratingSlice);
+  currentRatingVal.textContent = currentRatingSlider.value;
+
+  if (status.textContent == "watched") {
+    currentStatus.checked = true;
+  } else {
+    currentStatus.checked = false;
+  }
+
+  movies.findIndex(function (movie, index) {
+    if (
+      movie.title == currentTitle.value &&
+      movie.year == currentYear.value &&
+      movie.rating == currentRatingSlider.value &&
+      movie.status == status.textContent
+    ) {
+      console.log(movies[index].title);
+      const updateBtn = document.getElementById("update-movie");
+      updateBtn.addEventListener("click", () => {
+        movies[index].title = currentTitle.value;
+        movies[index].year = currentYear.value;
+        movies[index].rating = currentRatingSlider.value;
+        if ((currentStatus.checked = true)) {
+          movies[index].status = "watched";
+        } else {
+          movies[index].status = "not watched";
+        }
+        title.textContent = movies[index].title;
+        year.textContent = movies[index].year;
+        rating.textContent = `${movies[index].rating} out of 10`;
+        status.textContent = `${movies[index].status}`;
+
+        let localMovies = JSON.parse(localStorage.getItem("movie"));
+        localStorage.setItem("movie", JSON.stringify(movies));
+        console.log(movies[index]);
+
+        closeModal();
+      });
+    }
+  });
+}
